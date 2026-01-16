@@ -1,6 +1,7 @@
 package com.example.consumoapidungeondragons.api
 
 class Repository {
-    val apiInterface = com.example.retrofitapp.api.APIInterface.Companion.create()
+    private val apiInterface = APIInterface.create()
     suspend fun getAllMonsters() = apiInterface.getMonsters()
+    suspend fun getMonsterDetails(index: String) = apiInterface.getMonsterDetails(index)
 }
