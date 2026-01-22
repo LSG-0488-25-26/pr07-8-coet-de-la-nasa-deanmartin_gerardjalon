@@ -22,7 +22,7 @@ fun AppNavHost(modifier: Modifier = Modifier, navController: NavHostController) 
             val monsterIndex = backStackEntry.arguments?.getString("monsterId")
 
             if (monsterIndex != null) {
-                DetailsView(monsterIndex = monsterIndex)
+                DetailsView(monsterIndex = monsterIndex, navController = navController)
             } else {
                 navController.navigateUp()
             }

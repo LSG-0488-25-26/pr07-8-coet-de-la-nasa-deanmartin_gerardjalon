@@ -2,15 +2,19 @@ package com.example.consumoapidungeondragons.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.consumoapidungeondragons.api.APIInterface
@@ -19,7 +23,7 @@ import com.example.consumoapidungeondragons.viewmodel.MonstersViewModel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun DetailsView(monsterIndex: String, modifier: Modifier = Modifier) {
+fun DetailsView(monsterIndex: String, navController: NavController, modifier: Modifier = Modifier) {
     val viewModel: MonstersViewModel = viewModel()
     val monsterDetails by viewModel.monsterDetails.observeAsState()
     val isLoading by viewModel.detailsLoading.observeAsState(false)
@@ -50,15 +54,30 @@ fun DetailsView(monsterIndex: String, modifier: Modifier = Modifier) {
     ) {
 
         item {
-            val imageUrl = "${APIInterface.BASE_URL}${details.image}"
-            GlideImage(
-                model = imageUrl,
-                contentDescription = "Character Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-            )
+            Box(modifier = Modifier.fillMaxWidth()) {
+                val imageUrl = "${APIInterface.BASE_URL}${details.image}"
+                GlideImage(
+                    model = imageUrl,
+                    contentDescription = "Character Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                )
+
+                IconButton(
+                    onClick = { navController.navigateUp() },
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.White
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(12.dp))
 
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -111,7 +130,6 @@ fun DetailsView(monsterIndex: String, modifier: Modifier = Modifier) {
             }
         }
 
-        // Special Abilities
         if (details.special_abilities.isNotEmpty()) {
             item {
                 Card(modifier = Modifier
