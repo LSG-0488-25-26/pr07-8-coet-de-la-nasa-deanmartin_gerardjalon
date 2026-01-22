@@ -10,12 +10,12 @@ import retrofit2.http.Path
 import com.example.consumoapidungeondragons.model.listas.MonstersResponse
 
 interface APIInterface {
-    @GET("api/2014/monsters")
+    @GET("api/monsters")
     suspend fun getMonsters(): Response<MonstersResponse>
-    @GET("api/2014/monsters/{index}")
+    @GET("api/monsters/{index}")
     suspend fun getMonsterDetails(@Path("index") index: String): Response<MonsterDetails>
     companion object {
-        const val BASE_URL = "https://www.dnd5eapi.co/"
+        const val BASE_URL = "https://www.dnd5eapi.co"
         fun create(): APIInterface {
             val client = OkHttpClient.Builder().build()
             val retrofit = Retrofit.Builder()
