@@ -9,15 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.consumoapidungeondragons.viewmodel.MonstersViewModel
 
 @Composable
 fun ListView(
-    modifier: Modifier,
-    navController: NavController,
-    viewModel: MonstersViewModel
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
+    val viewModel: MonstersViewModel = viewModel()
     val monsters = viewModel.monsters.observeAsState(emptyList())
 
     LazyColumn(
