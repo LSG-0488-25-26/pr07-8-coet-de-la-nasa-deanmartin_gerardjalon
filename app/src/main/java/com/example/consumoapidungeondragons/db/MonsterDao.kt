@@ -14,13 +14,19 @@ interface MonsterDao {
     @Query("SELECT * FROM monsters WHERE `index` = :index")
     suspend fun getMonster(index: String): MonstersResult?
 
+    @Query("SELECT EXISTS(SELECT 1 FROM monsters WHERE `index` = :index)")
+    suspend fun isKilled(index: String): Boolean
+
     @Insert
     suspend fun killMonster(monster: MonstersResult)
 
     @Delete
-    fun freeMonster(monster: MonstersResult)
+    suspend fun freeMonster(index: String)
 
-    @Query("UPDATE monsters SET is_killed = :isKilled WHERE `index` = :index")
-    suspend fun updateMonster(index: String, isKilled: Boolean)
+    //Como podemos hacer para updatear o buscar un monster si tenemos un ignore en la clase para
+    //no importar todas las filas de la api, o ignore o column info
+    //ignore -> No podemos updatear ni buscar por filtro
+    //column info -> Podemos pero hay que insertar todas las filas
+
 
 }
