@@ -12,6 +12,5 @@ class MonsterApplication: Application() {
     override fun onCreate(){
         super.onCreate()
         database = Room.databaseBuilder(this, MonsterDatabase::class.java, "monsters").build()
-
     }
 }
