@@ -18,7 +18,7 @@ interface MonsterDao {
     suspend fun isKilled(index: String): Boolean
 
     @Insert
-    suspend fun killMonster(monster: MonstersResult)
+    suspend fun killMonster(index: String)
 
     @Delete
     suspend fun freeMonster(index: String)

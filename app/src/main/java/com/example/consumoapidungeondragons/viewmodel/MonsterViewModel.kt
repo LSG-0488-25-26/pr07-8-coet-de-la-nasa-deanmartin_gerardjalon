@@ -81,7 +81,7 @@ class MonstersViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val killed = DBRepository.isKilled(index)
             if (killed) DBRepository.freeMonster(index)
-            else DBRepository.killMonster(MonstersResult(index = index, name = name, url = url))
+            else DBRepository.killMonster(index)
 
             val updated = DBRepository.isKilled(index)
             withContext(Dispatchers.Main) {

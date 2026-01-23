@@ -7,7 +7,7 @@ class DBRepository {
 
     suspend fun getAllMonsters() = daoInterface.getAllMonsters()
     suspend fun getMonster(index: String) = daoInterface.getMonster(index)
-    suspend fun killMonster(monster: MonstersResult) = daoInterface.killMonster(monster)
+    suspend fun killMonster(index: String) = daoInterface.killMonster(index)
     suspend fun freeMonster(index: String) = daoInterface.freeMonster(index)
     suspend fun isKilled(index: String) = daoInterface.isKilled(index)
 

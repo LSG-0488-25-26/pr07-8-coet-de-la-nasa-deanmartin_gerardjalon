@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -27,6 +29,9 @@ fun DetailsView(monsterIndex: String, navController: NavController, modifier: Mo
     val viewModel: MonstersViewModel = viewModel()
     val monsterDetails by viewModel.monsterDetails.observeAsState()
     val isLoading by viewModel.detailsLoading.observeAsState(false)
+    val isKilled by viewModel.isKilled.observeAsState(false)
+
+
 
     LaunchedEffect(monsterIndex) {
         viewModel.getMonsterDetails(monsterIndex)
@@ -80,17 +85,40 @@ fun DetailsView(monsterIndex: String, navController: NavController, modifier: Mo
             }
             Spacer(modifier = Modifier.height(12.dp))
 
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                Text(
-                    text = details.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = "${details.size} • ${details.type} • ${details.alignment}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            Row {
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = details.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = "${details.size} • ${details.type} • ${details.alignment}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = {
+                        monsterDetails?.let {
+                            viewModel.toggleKilled(
+                                index = it.index,
+                                name = it.name,
+                                url = it.url
+                            )
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (isKilled)
+                            Icons.Filled.Delete
+                        else
+                            Icons.Outlined.Delete,
+                        contentDescription = null,
+                        tint = if (isKilled) Color.Red else Color.Gray
+                    )
+                }
             }
         }
 
