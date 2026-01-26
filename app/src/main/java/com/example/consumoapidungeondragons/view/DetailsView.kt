@@ -29,7 +29,7 @@ fun DetailsView(monsterIndex: String, navController: NavController, modifier: Mo
     val viewModel: MonstersViewModel = viewModel()
     val monsterDetails by viewModel.monsterDetails.observeAsState()
     val isLoading by viewModel.detailsLoading.observeAsState(false)
-    val isKilled by viewModel.isKilled.observeAsState(false)
+    val isKilled by viewModel.isKilled.observeAsState()
 
 
 
@@ -111,12 +111,12 @@ fun DetailsView(monsterIndex: String, navController: NavController, modifier: Mo
                     }
                 ) {
                     Icon(
-                        imageVector = if (isKilled)
+                        imageVector = if (isKilled == true)
                             Icons.Filled.Delete
                         else
                             Icons.Outlined.Delete,
                         contentDescription = null,
-                        tint = if (isKilled) Color.Red else Color.Gray
+                        tint = if (isKilled == true) Color.Red else Color.Gray
                     )
                 }
             }

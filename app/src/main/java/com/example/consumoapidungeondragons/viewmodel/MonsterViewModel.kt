@@ -37,7 +37,6 @@ class MonstersViewModel : ViewModel() {
             _loading.value = false
             return
         }
-
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getAllMonsters()
             withContext(Dispatchers.Main) {
@@ -50,15 +49,16 @@ class MonstersViewModel : ViewModel() {
             }
         }
     }
-
     fun getMonsterDetails(monsterIndex: String) {
         _detailsLoading.value = true
         _monsterDetails.value = null
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getMonsterDetails(monsterIndex)
+            val isKilled = DBRepository.isKilled(monsterIndex)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     _monsterDetails.value = response.body()
+                    _isKilled.value = isKilled ?: false
                 } else {
                     Log.e("API Error", "Details: ${response.message()}")
                     _monsterDetails.value = null
@@ -67,7 +67,6 @@ class MonstersViewModel : ViewModel() {
             }
         }
     }
-
     fun getKilledMonsters() {
         CoroutineScope(Dispatchers.IO).launch {
             val monsters = DBRepository.getAllMonsters()
@@ -76,19 +75,15 @@ class MonstersViewModel : ViewModel() {
             }
         }
     }
-
     fun toggleKilled(index: String, name: String, url: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val killed = DBRepository.isKilled(index)
-            if (killed) DBRepository.freeMonster(index)
-            else DBRepository.killMonster(index)
-
-            val updated = DBRepository.isKilled(index)
+            val currentState = _isKilled.value ?: false
+            val updatedMonster = MonstersResult(index, name, url, !currentState)
+            DBRepository.insert(updatedMonster)
             withContext(Dispatchers.Main) {
-                _isKilled.value = updated
+                _isKilled.value = !currentState
             }
         }
     }
-
 
 }
